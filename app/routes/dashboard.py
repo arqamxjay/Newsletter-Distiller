@@ -6,7 +6,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app import db
 from app.models import UserPreferences, Newsletter
-from app.workers.tasks import process_user_newsletters
 
 dashboard_bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
@@ -67,7 +66,8 @@ def process_newsletters():
         return redirect(url_for('dashboard.settings'))
     
     try:
-        # Queue background task
+        # Import here to avoid circular imports
+        from app.workers.tasks import process_user_newsletters
         task = process_user_newsletters.delay(current_user.id)
         flash(f'Processing started! Task ID: {task.id}', 'info')
     except Exception as e:

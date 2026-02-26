@@ -6,6 +6,10 @@
 credentials.json
 token.pickle
 
+# Local instance data
+instance/
+*.db
+
 # Python
 __pycache__/
 *.py[cod]

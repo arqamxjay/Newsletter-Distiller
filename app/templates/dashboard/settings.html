@@ -10,39 +10,41 @@
     
     .settings-section {
         background: white;
-        border-radius: 8px;
+        border-radius: 16px;
         padding: 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
     }
     
     .settings-section h2 {
         margin-bottom: 1.5rem;
-        color: #2c3e50;
+        color: var(--secondary);
         padding-bottom: 1rem;
-        border-bottom: 2px solid #ecf0f1;
+        border-bottom: 2px solid #e2e8f0;
     }
     
     .gmail-status {
-        background: #d4edda;
-        border: 1px solid #c3e6cb;
+        background: #ecfdf3;
+        border: 1px solid #bbf7d0;
         border-radius: 4px;
         padding: 1rem;
         margin-bottom: 1rem;
-        color: #155724;
+        color: #065f46;
     }
     
     .gmail-status.disconnected {
-        background: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
+        background: #fef2f2;
+        border-color: #fecaca;
+        color: #991b1b;
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="settings-container">
-    <h1 style="margin-bottom: 2rem;">Settings</h1>
+    <div class="page-title" style="margin-bottom: 0.25rem;">Settings</div>
+    <p class="page-subtitle" style="margin-bottom: 2rem;">Manage your Gmail connection and processing preferences.</p>
     
     <!-- Gmail Connection -->
     <div class="settings-section">
@@ -54,19 +56,19 @@
         </div>
         
         <form method="POST" action="{{ url_for('gmail.disconnect') }}">
-            <button type="submit" class="secondary" style="width: 100%;">Disconnect Gmail</button>
+            <button type="submit" class="btn btn-secondary" style="width: 100%;">Disconnect Gmail</button>
         </form>
         {% else %}
         <div class="gmail-status disconnected">
             ✗ Gmail account not connected
         </div>
         
-        <p style="color: #7f8c8d; margin-bottom: 1rem;">
+        <p class="muted" style="margin-bottom: 1rem;">
             Connect your Gmail account to access your emails and newsletters.
         </p>
         
         <a href="{{ url_for('gmail.authorize') }}" style="display: inline-block;">
-            <button>Connect Gmail Account</button>
+            <button class="btn btn-primary">Connect Gmail Account</button>
         </a>
         {% endif %}
     </div>
@@ -81,7 +83,7 @@
                 <input type="text" id="newsletter_label" name="newsletter_label" 
                        value="{{ prefs.newsletter_label or 'To-Summarize' }}"
                        placeholder="e.g., To-Summarize">
-                <small style="color: #7f8c8d; display: block; margin-top: 0.25rem;">
+                <small class="muted" style="display: block; margin-top: 0.25rem;">
                     The Gmail label to look for newsletters
                 </small>
             </div>
@@ -110,7 +112,7 @@
                 </label>
             </div>
             
-            <button type="submit" style="width: 100%;">Save Preferences</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Save Preferences</button>
         </form>
     </div>
 </div>
