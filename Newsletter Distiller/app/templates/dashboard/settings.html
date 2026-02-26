@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Newsletter Distiller{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-container {
+        max-width: 600px;
+    }
+    
+    .settings-section {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .settings-section h2 {
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #ecf0f1;
+    }
+    
+    .gmail-status {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        color: #155724;
+    }
+    
+    .gmail-status.disconnected {
+        background: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h1 style="margin-bottom: 2rem;">Settings</h1>
+    
+    <!-- Gmail Connection -->
+    <div class="settings-section">
+        <h2>Gmail Account</h2>
+        
+        {% if current_user.gmail_token %}
+        <div class="gmail-status">
+            ✓ Gmail account connected
+        </div>
+        
+        <form method="POST" action="{{ url_for('gmail.disconnect') }}">
+            <button type="submit" class="secondary" style="width: 100%;">Disconnect Gmail</button>
+        </form>
+        {% else %}
+        <div class="gmail-status disconnected">
+            ✗ Gmail account not connected
+        </div>
+        
+        <p style="color: #7f8c8d; margin-bottom: 1rem;">
+            Connect your Gmail account to access your emails and newsletters.
+        </p>
+        
+        <a href="{{ url_for('gmail.authorize') }}" style="display: inline-block;">
+            <button>Connect Gmail Account</button>
+        </a>
+        {% endif %}
+    </div>
+    
+    <!-- Processing Preferences -->
+    <div class="settings-section">
+        <h2>Processing Preferences</h2>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="newsletter_label">Gmail Label</label>
+                <input type="text" id="newsletter_label" name="newsletter_label" 
+                       value="{{ prefs.newsletter_label or 'To-Summarize' }}"
+                       placeholder="e.g., To-Summarize">
+                <small style="color: #7f8c8d; display: block; margin-top: 0.25rem;">
+                    The Gmail label to look for newsletters
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <label for="summary_style">Summary Style</label>
+                <select id="summary_style" name="summary_style">
+                    <option value="bullet-points" {% if prefs.summary_style == 'bullet-points' %}selected{% endif %}>Bullet Points</option>
+                    <option value="paragraph" {% if prefs.summary_style == 'paragraph' %}selected{% endif %}>Paragraph</option>
+                    <option value="summary" {% if prefs.summary_style == 'summary' %}selected{% endif %}>Executive Summary</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="send_to_email">Send Processed Emails To</label>
+                <input type="email" id="send_to_email" name="send_to_email" 
+                       value="{{ prefs.send_to_email or current_user.email }}"
+                       placeholder="your-email@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="auto_send" 
+                           {% if prefs.auto_send %}checked{% endif %}>
+                    Auto-send processed newsletters
+                </label>
+            </div>
+            
+            <button type="submit" style="width: 100%;">Save Preferences</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

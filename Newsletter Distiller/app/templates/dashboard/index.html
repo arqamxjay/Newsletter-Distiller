@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Newsletter Distiller{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    
+    .stat-card h3 {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+    }
+    
+    .stat-card .value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    
+    .newsletters-list {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .newsletter-item {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .newsletter-item:last-child {
+        border-bottom: none;
+    }
+    
+    .newsletter-info h4 {
+        margin-bottom: 0.25rem;
+        color: #2c3e50;
+    }
+    
+    .newsletter-info p {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
+    
+    .status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .status.completed {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status.pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .status.processing {
+        background: #cfe2ff;
+        color: #084298;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1 style="margin-bottom: 2rem;">Dashboard</h1>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total Processed</h3>
+            <div class="value">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Completed</h3>
+            <div class="value" style="color: #27ae60;">{{ stats.completed }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <div class="value" style="color: #f39c12;">{{ stats.pending }}</div>
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 1.5rem;">
+        <form method="POST" action="{{ url_for('dashboard.process_newsletters') }}">
+            <button type="submit">Process Newsletters Now</button>
+        </form>
+    </div>
+    
+    {% if newsletters %}
+    <div class="newsletters-list">
+        <div style="padding: 1.5rem; background: #f8f9fa; border-bottom: 1px solid #ddd;">
+            <h2>Recent Newsletters</h2>
+        </div>
+        
+        {% for newsletter in newsletters %}
+        <div class="newsletter-item">
+            <div class="newsletter-info">
+                <h4>{{ newsletter.original_subject or 'Untitled' }}</h4>
+                <p>{{ newsletter.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+            <span class="status {{ newsletter.status }}">{{ newsletter.status.capitalize() }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <p style="color: #7f8c8d; font-size: 1.1rem;">No newsletters processed yet.</p>
+        <p style="color: #95a5a6; margin-top: 0.5rem;">
+            <a href="{{ url_for('dashboard.settings') }}">Connect your Gmail account</a> to get started.
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+runtime: python39
+env: standard
+
+env_variables:
+  FLASK_ENV: "production"
+  SECRET_KEY: "change-this-to-secure-random-key"
+  DATABASE_URL: "sqlite:///newsletter_distiller.db"
+  GMAIL_CREDENTIALS_FILE: "credentials.json"
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5
