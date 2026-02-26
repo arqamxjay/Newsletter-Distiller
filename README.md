@@ -21,15 +21,48 @@ Multi-user web application that automates the entire newsletter processing pipel
 
 ### Login Page
 Beautiful, clean authentication interface with feature highlights
-![Login](screenshots/login.png)
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 📧 Newsletter Distiller          Login | Sign Up             │
+│ AI-powered newsletter intelligence                           │
+│                                                               │
+│  AI Digest                                                   │
+│  Welcome back.                              [Secure]         │
+│  Stay on top with clean, focused insights                    │
+│                                                               │
+│  ✓ One-click newsletter processing         Email             │
+│  ✓ Personalized summary styles            [________]        │
+│  ✓ Gmail label automation                                    │
+│                                            Password          │
+│                                           [________]         │
+│                                            [  Login  ]        │
+│                                                               │
+│                          Don't have account? Sign up here    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Live URL:** http://127.0.0.1:8888/auth/login
 
 ### Dashboard
 Real-time stats and newsletter processing overview
-![Dashboard](screenshots/dashboard.png)
+```
+Visit http://127.0.0.1:8888/dashboard/ after login
+- Newsletter statistics (total, completed, pending)
+- Process newsletters trigger button
+- Gmail connection status
+- Recent newsletters list
+```
 
 ### Settings
 Customize Gmail connection and processing preferences
-![Settings](screenshots/settings.png)
+```
+Visit http://127.0.0.1:8888/dashboard/settings
+- Connect/disconnect Gmail account
+- Configure newsletter label
+- Choose summary style (bullets, paragraphs, executive summary)
+- Auto-send settings
+- Email preferences
+```
 
 ## Quick Start
 
