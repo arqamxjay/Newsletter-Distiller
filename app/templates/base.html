@@ -35,10 +35,38 @@
             min-height: 100vh;
         }
 
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(60px);
+            opacity: 0.35;
+        }
+
+        body::before {
+            top: -80px;
+            left: -60px;
+            background: #c7d2fe;
+        }
+
+        body::after {
+            bottom: -120px;
+            right: -80px;
+            background: #bae6fd;
+        }
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
+        }
+
+        main {
+            padding-bottom: 3rem;
         }
 
         nav {
@@ -225,6 +253,57 @@
             border: 1px solid var(--border);
         }
 
+        .auth-shell {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            align-items: center;
+            margin: 4rem auto;
+            max-width: 980px;
+        }
+
+        .auth-side {
+            padding: 2rem;
+        }
+
+        .auth-card {
+            padding: 2rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #eef2ff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
         .card-header {
             display: flex;
             align-items: center;
@@ -280,7 +359,7 @@
         </div>
     </nav>
     
-    <div class="container">
+    <main class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -290,6 +369,12 @@
         {% endwith %}
         
         {% block content %}{% endblock %}
-    </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            Built with ❤️ for clear, actionable newsletter summaries.
+        </div>
+    </footer>
 </body>
 </html>

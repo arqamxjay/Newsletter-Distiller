@@ -1,103 +1,84 @@
 # Newsletter Distiller 📨
 
-An intelligent automation system that transforms your cluttered newsletter inbox into a high-value "intelligence report" using AI.
+An AI-powered web application that transforms cluttered newsletters into clean, actionable daily digests. Streamline your inbox and stay informed effortlessly.
+
+**Website:** http://localhost:8888
 
 ## Overview
 
-The Newsletter Distiller automates the entire newsletter processing pipeline:
+Multi-user web application that automates the entire newsletter processing pipeline:
 
-1. **Fetch** - Pulls unread newsletters from Gmail using OAuth 2.0
-2. **Clean** - Sanitizes HTML and extracts clean text and links
-3. **Summarize** - Uses AI (OpenAI or Ollama) to generate 3-bullet summaries
-4. **Compile** - Merges all summaries into an elegant daily digest
-5. **Send** - Delivers the digest via email and marks originals as read
+## Features
+
+✨ **Clean, Modern UI** - Responsive design with intuitive navigation
+🔐 **Secure OAuth** - Safe Gmail integration with automatic token refresh
+📊 **Dashboard** - Track processed newsletters and viewing statistics
+⚙️ **Customizable** - Configure label, summary style, and sending preferences
+🔄 **Multi-User Ready** - Each user has isolated Gmail tokens and settings
+🎯 **Smart Labeling** - Automatic newsletter filtering by Gmail labels
+
+## Screenshots
+
+### Login Page
+Beautiful, clean authentication interface with feature highlights
+![Login](screenshots/login.png)
+
+### Dashboard
+Real-time stats and newsletter processing overview
+![Dashboard](screenshots/dashboard.png)
+
+### Settings
+Customize Gmail connection and processing preferences
+![Settings](screenshots/settings.png)
+
+## Quick Start
+
+### 1. Prerequisites
+
+- Python 3.9+
+- Gmail account with OAuth credentials
+- (Optional) OpenAI API key for advanced summarization
+
+### 2. Install & Setup
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements_web.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+```
+
+### 3. Run Locally
+
+```bash
+python -c "from app import create_app; app = create_app(); app.run(debug=True, port=8888)"
+```
+
+Visit **http://127.0.0.1:8888**
+
+### 4. First Steps
+
+1. **Sign up** with your email
+2. **Connect Gmail** via OAuth (Settings page)
+3. **Configure** label and summary style
+4. **Process newsletters** - click the button or set up scheduled jobs
 
 ## Architecture
 
-```
-[Gmail API] → [Phase 1: Access] → [Phase 2: Cleaning] → [Phase 3: Intelligence]
-                                                              ↓
-                                                    [Phase 4: Delivery]
-                                                              ↓
-                                                    [Phase 5: Scheduling]
-```
+### Database Models
 
-## Prerequisites
+- **User** - Account info with relationship to tokens/preferences
+- **GmailToken** - Secure OAuth token storage per user
+- **UserPreferences** - Newsletter label, summary style, email settings  
+- **Newsletter** - Processing history with status tracking
 
-### Gmail Setup
-1. **Create a Google Cloud Project**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project
-   - Enable the **Gmail API**
-   - Create an OAuth 2.0 credential (Desktop application)
-   - Download the credentials file as `credentials.json`
-
-2. **Create Gmail Filter**
-   - In Gmail, create a filter for newsletters
-   - Apply a label (e.g., "To-Summarize")
-   - This prevents the bot from processing personal emails
-
-3. **Generate App-Specific Password**
-   - Go to [Google Account Security](https://myaccount.google.com/security)
-   - Enable 2-Step Verification if not already done
-   - Create an app-specific password for "Mail" on "macOS"
-   - Save this password for later
-
-### AI Provider Setup
-
-**Option A: OpenAI (Recommended for speed & quality)**
-- Sign up at [OpenAI](https://platform.openai.com/)
-- Create an API key
-- Set `AI_PROVIDER=openai` in `.env`
-
-**Option B: Ollama (Free & Private)**
-- Install [Ollama](https://ollama.ai/)
-- Pull a model: `ollama pull llama3`
-- Run: `ollama serve`
-- Set `AI_PROVIDER=ollama` in `.env`
-
-## Installation
-
-### 1. Clone/Download the Repository
-```bash
-cd "Newsletter Distiller"
-```
-
-### 2. Create Virtual Environment
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure Environment
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your settings:
-```env
-# Gmail Configuration
-GMAIL_CREDENTIALS_FILE=credentials.json
-GMAIL_TOKEN_FILE=token.pickle
-SENDER_EMAIL=your-email@gmail.com
-RECIPIENT_EMAIL=your-email@gmail.com
-GMAIL_APP_PASSWORD=your-app-specific-password
-
-# AI Configuration
-AI_PROVIDER=openai  # or ollama
-OPENAI_API_KEY=sk-...
-OPENAI_MODEL=gpt-4o-mini
-
-# Gmail Settings
-NEWSLETTER_LABEL=To-Summarize
-```
-
-### 5. Add Credentials
+### Tech Stack
 Place your `credentials.json` file in the project root directory.
 
 ## Running the Distiller

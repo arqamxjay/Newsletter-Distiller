@@ -2,9 +2,10 @@
 Flask app factory for Newsletter Distiller
 """
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_login import current_user
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -29,6 +30,7 @@ def create_app(config_name='development'):
     
     # Create tables
     with app.app_context():
+        from app import models
         db.create_all()
     
     # Register blueprints
@@ -39,5 +41,11 @@ def create_app(config_name='development'):
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(gmail_bp)
+
+    @app.route('/')
+    def root():
+        if current_user.is_authenticated:
+            return redirect(url_for('dashboard.index'))
+        return redirect(url_for('auth.login'))
     
     return app
